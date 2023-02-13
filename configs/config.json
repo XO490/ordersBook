@@ -1,0 +1,4 @@
+{
+  "bind_addr": ":8081",
+  "room_types": ["econom", "standart", "lux", "super"]
+}
