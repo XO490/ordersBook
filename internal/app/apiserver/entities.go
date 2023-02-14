@@ -5,10 +5,10 @@ type void struct{}
 var AvailableRooms = map[string]void{}
 
 type Order struct {
-	Room      string
-	UserEmail string
-	From      string
-	To        string
+	Room      string `json:"room"`
+	UserEmail string `json:"user_email"`
+	From      string `json:"from"`
+	To        string `json:"to"`
 }
 
 var ActualOrders = make([]Order, 0)
@@ -20,6 +20,7 @@ type Payload struct {
 }
 
 type Result struct {
-	HttpStatus  int    `json:"http_status"`
-	Description string `json:"description"`
+	HttpStatus  int     `json:"http_status"`
+	Description string  `json:"description"`
+	Orders      []Order `json:"orders,omitempty"`
 }

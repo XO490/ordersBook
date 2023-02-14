@@ -84,20 +84,58 @@ fail:
 }
 ```
 
+get orders: `/orders`
+```bash
+curl "http://127.0.0.1:8081/orders?email=qwe@qwe.qwe"
+```
+succes:
+```json
+{
+  "ok": true,
+  "result": {
+    "http_status": 200,
+    "description": "Request successful",
+    "orders": [
+      {
+        "room": "lux",
+        "user_email": "qwe@qwe.qwe",
+        "from": "2023-02-14",
+        "to": "2023-02-18"
+      },
+      {
+        "room": "standart",
+        "user_email": "qwe@qwe.qwe",
+        "from": "2023-02-19",
+        "to": "2023-02-20"
+      }
+    ]
+  }
+}
+```
+fail:
+```json
+{
+  "ok": false,
+  "result": {
+    "http_status": 400,
+    "description": "Required parameters are missing: email"
+  }
+}
+```
+
 ---
 
 ## Logging
 
 ```bash
-2023/02/14 10:39:04 [Info]: Orders Book | Server: v0.0.1, api-v1 
-2023/02/14 10:39:04 [Info]: Server started at :8081 
-2023/02/14 10:39:15 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[4] to:[2023-02-18]] 127.0.0.1:53984 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:39:24 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[lux] to:[2023-02-18]] 127.0.0.1:53984 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:42:20 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[lux] to:[2023-02-18]] 127.0.0.1:46572 curl/7.87.0 
-2023/02/14 10:45:03 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[lux] to:[2023-02-18]] 127.0.0.1:51274 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:45:39 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[luxx] to:[2023-02-18]] 127.0.0.1:51274 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:47:10 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-14] room:[lux] to:[2023-02-183]] 127.0.0.1:51274 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:47:22 [Info]: 127.0.0.1:8081 GET map[email:[qwe@qwe.qwe] from:[2023-02-144] room:[lux] to:[2023-02-18]] 127.0.0.1:51274 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
-2023/02/14 10:47:53 [Info]: 127.0.0.1:8081 GET map[email:[] from:[2023-02-14] room:[lux] to:[2023-02-18]] 127.0.0.1:51274 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:27:06 [Info]: Orders Book | Server: v0.0.1, api-v1 
+2023/02/14 11:27:06 [Info]: Server started at :8081 
+2023/02/14 11:27:08 [Info]: 127.0.0.1:8081 GET /order?room=lux&email=qwe@qwe.qwe&from=2023-02-14&to=2023-02-18 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:27:26 [Info]: 127.0.0.1:8081 GET /orders?email=qwe@qwe.qwe 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:28:01 [Info]: 127.0.0.1:8081 GET /order?room=standart&email=qwe@qwe.qwe&from=2023-02-14&to=2023-02-18 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:28:14 [Info]: 127.0.0.1:8081 GET /order?room=standart&email=qwe@qwe.qwe&from=2023-02-15&to=2023-02-18 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:28:32 [Info]: 127.0.0.1:8081 GET /order?room=standart&email=qwe@qwe.qwe&from=2023-02-18&to=2023-02-20 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:28:58 [Info]: 127.0.0.1:8081 GET /order?room=standart&email=qwe@qwe.qwe&from=2023-02-19&to=2023-02-20 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
+2023/02/14 11:29:16 [Info]: 127.0.0.1:8081 GET /orders?email=qwe@qwe.qwe 127.0.0.1:37650 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 
 ```
 

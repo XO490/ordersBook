@@ -7,7 +7,7 @@ import (
 )
 
 func loggingHandle(s *APIServer, r *http.Request) {
-	s.logInfo(r.Host, r.Method, r.URL.Query(), r.RemoteAddr, r.UserAgent())
+	s.logInfo(r.Host, r.Method, r.URL, r.RemoteAddr, r.UserAgent())
 }
 
 func (s *APIServer) handleMakeOrder() http.HandlerFunc {
@@ -88,9 +88,54 @@ func (s *APIServer) handleMakeOrder() http.HandlerFunc {
 
 func (s *APIServer) handleGetOrders() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/plain")
-
-		w.WriteHeader(http.StatusCreated)
 		loggingHandle(s, r)
+		w.Header().Set("Content-Type", "application/json")
+
+		var payload Payload
+		var err error
+		var jsonData []byte
+
+		params := r.URL.Query()
+		email := params.Get("email")
+
+		sendResult := func(data Payload, httpStatus int) {
+			w.WriteHeader(httpStatus)
+			if jsonData, err = json.Marshal(&data); err != nil {
+				s.logPanic(err, "handleMakeOrder")
+			}
+			if _, err = w.Write(jsonData); err != nil {
+				s.logPanic(err, "handleMakeOrder > send")
+			}
+		}
+
+		if email == "" {
+			payload = Payload{
+				Ok: false,
+				Result: Result{
+					HttpStatus:  http.StatusBadRequest,
+					Description: textErrorNoRequiredEmail,
+					Orders:      nil,
+				},
+			}
+			sendResult(payload, http.StatusBadRequest)
+			return
+		}
+
+		orders := make([]Order, 0)
+		for _, item := range ActualOrders {
+			if item.UserEmail == email {
+				orders = append(orders, item)
+			}
+		}
+
+		payload = Payload{
+			Ok: true,
+			Result: Result{
+				HttpStatus:  http.StatusOK,
+				Description: textOkRequestSuccessful,
+				Orders:      orders,
+			},
+		}
+		sendResult(payload, http.StatusOK)
 	}
 }
