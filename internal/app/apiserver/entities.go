@@ -12,3 +12,14 @@ type Order struct {
 }
 
 var ActualOrders = make([]Order, 0)
+
+// Payload
+type Payload struct {
+	Ok     bool   `json:"ok"`
+	Result Result `json:"result"`
+}
+
+type Result struct {
+	HttpStatus  int    `json:"http_status"`
+	Description string `json:"description"`
+}

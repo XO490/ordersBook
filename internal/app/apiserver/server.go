@@ -39,3 +39,7 @@ func (s *APIServer) logWarn(v ...any) {
 func (s *APIServer) logError(err error, v ...any) {
 	s.logger.Printf("[Error]: %v %v\n", err, v)
 }
+
+func (s *APIServer) logPanic(err error, v ...any) {
+	s.logger.Panicf("[Panic]: %v %v\n", err, v)
+}
